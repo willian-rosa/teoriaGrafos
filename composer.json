@@ -1,0 +1,13 @@
+{
+    "name": "will/teoria-grafos",
+    "description": "Trabalho de Grafos da Unisul",
+    "authors": [
+        {
+            "name": "Willian da Rosa",
+            "email": "r_wi@hotmail.com"
+        }
+    ],
+    "require": {
+        "raveren/kint": "^1.0"
+    }
+}
