@@ -9,5 +9,11 @@
     ],
     "require": {
         "raveren/kint": "^1.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "Grafo":        "src/"
+        }
     }
+    
 }
