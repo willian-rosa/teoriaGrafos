@@ -179,4 +179,70 @@ class Grafo{
         
         
     }
+    
+    public function gerarListaAresta(){
+        
+        $inicio     = array();
+        $termino    = array();
+        
+        foreach ($this->arestas as $aresta){
+            
+            $inicio[]   = $aresta->getVertece1();
+            $termino[]      = $aresta->getVertece2();
+            
+        }
+        
+        $listaAresta = array($inicio, $termino);
+
+        return $listaAresta;
+        
+    }
+    
+    /**
+     * @param type $index
+     * @return Vertece
+     */
+    public function buscaVertecePorIndex($index){
+        
+        $verteces = $this->verteces;
+        reset($verteces);
+        
+        while ($vertece = current($verteces)) {
+
+            if($vertece->getIndex() === $index){
+                return $vertece;
+            }
+            
+            next($verteces);
+            
+        }
+        
+        return null;
+        
+    }
+    
+    /**
+     * 
+     * @param type $index
+     * @return Aresta
+     */
+    public function buscaArestaPorIndex($index){
+        
+        $arestas = $this->arestas;
+        reset($arestas);
+        
+        while ($aresta = current($arestas)) {
+
+            if($aresta->getIndex() === $index){
+                return $aresta;
+            }
+            
+            next($arestas);
+            
+        }
+        
+        return null;
+        
+    }
+    
 }
