@@ -19,7 +19,7 @@ class Grafo{
     public function __construct($strVerteces, $strArestas, $digrafo) {
         $this->verteces = $this->converteStringEmVerteces($strVerteces);
         $this->arestas  = $this->converteStringEmArestas($strArestas);
-        
+                
         $this->digrafo = $digrafo;
         
     }
@@ -75,14 +75,15 @@ class Grafo{
             
             $nomesArestas = \preg_split('/,/', $chaveAresta);
             
-            $vertece1 = $this->buscaVertecePorNome($nomesArestas[0]);
-            $vertece2 = $this->buscaVertecePorNome($nomesArestas[1]);
+            $vertece1   = $this->buscaVertecePorNome($nomesArestas[0]);
+            $vertece2   = $this->buscaVertecePorNome($nomesArestas[1]);
+            $peso       = $nomesArestas[2];
 
             $index = $indexAresta++;
             
             $nomeAresta = static::$prefixNomeAresta.($indexAresta);
             
-            $aresta = new Aresta($index, $nomeAresta, $vertece1, $vertece2);
+            $aresta = new Aresta($index, $nomeAresta, $vertece1, $vertece2, $peso);
             
             $arestas[] = $aresta;
             

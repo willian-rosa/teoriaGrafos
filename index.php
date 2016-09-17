@@ -7,17 +7,22 @@ $digrafo = false;
 
 $grafo = null;
 
-if(isset($_POST['verteces'], $_POST['arestas'])){
+//if(isset($_POST['verteces'], $_POST['arestas'])){
 
     $verteces   = $_POST['verteces'];
     $arestas    = $_POST['arestas'];
 
     $digrafo    = !!$_POST['digrafo'];
+    
+    $verteces = '{1,2,3,4,5}';
+    $arestas = '{(1,2,31)(1,5,32)(2,3,33)(2,5,34)(2,4,35)(3,4,36)(4,5,37)}';
+    $digrafo = true;
+    
 
 
     $grafo = new Grafo\Grafo($verteces, $arestas, $digrafo);
 
-}
+//}
 
 ?>
 
@@ -77,7 +82,7 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                     
                     <div class="form-group">
                         <label for="arestas">Arestas</label>
-                        <input id="arestas" type="text" class="form-control" name="arestas" placeholder="{(1,2)(1,5)(2,3)(2,5)(2,4)(3,4)(4,5)}" value="<?php echo $arestas;?>">
+                        <input id="arestas" type="text" class="form-control" name="arestas" placeholder="{(1,2,15)(1,5,20)(2,3,5)(2,5,10)(2,4,32)(3,4,25)(4,5,8)}" value="<?php echo $arestas;?>">
                     </div>
                     <div class="form-group ">
                         <label for="digrafo">Digrafo</label>
