@@ -2,7 +2,8 @@
 namespace Grafo;
 
 class Grafo{
-    
+
+    public static $inifito = 100000;
     private static $prefixNomeAresta = 'e';
 
 
@@ -14,6 +15,10 @@ class Grafo{
      */
     private $arestas = array();
     private $digrafo;
+    
+    private $listaAdjacencia;
+    private $matrizAdjacencia;
+    private $matrizDistancia;
 
 
     public function __construct($strVerteces, $strArestas, $digrafo) {
@@ -112,7 +117,15 @@ class Grafo{
         
     }
     
+    public function hasDigrafo(){
+        return $this->digrafo;
+    }
+
     public function gerarListaDeAdjacencia(){
+        
+        if($this->listaAdjacencia){
+            return $this->listaAdjacencia;
+        }
         
         $adjacencia = array();
         
@@ -131,11 +144,17 @@ class Grafo{
             }
         }
         
+        $this->listaAdjacencia = $adjacencia;
+        
         return $adjacencia;
         
     }
     
     public function gerarMatrizDeAdjacencia(){
+        
+        if($this->matrizAdjacencia){
+            return $this->matrizAdjacencia;
+        }
         
         $totalVerteces = count($this->verteces);
         
@@ -144,13 +163,15 @@ class Grafo{
         
         foreach ($this->arestas as $aresta){
             
-            $matriz[$aresta->getVertece1()->getIndex()][$aresta->getVertece2()->getIndex()]++;
+            $matriz[$aresta->getVertece1()->getIndex()][$aresta->getVertece2()->getIndex()] = $aresta->getPeso();
             
             if(!$this->digrafo){
-                $matriz[$aresta->getVertece2()->getIndex()][$aresta->getVertece1()->getIndex()]++;
+                $matriz[$aresta->getVertece2()->getIndex()][$aresta->getVertece1()->getIndex()] = $aresta->getPeso();
             }
             
         }
+        
+        $this->matrizAdjacencia = $matriz;
 
         return $matriz;
         
@@ -245,5 +266,169 @@ class Grafo{
         return null;
         
     }
+    
+    public function gerarMatrizDistancia(){
+        
+        if($this->matrizDistancia){
+            return $this->matrizDistancia;
+        }
+        
+        $matrizDistancia = array();
+        
+        foreach ($this->verteces as $vertece){
+            
+            $algoritmoDijkstra = new AlgoritmoDijkstra($vertece,
+                                                        $this->verteces,
+                                                        $this->gerarListaDeAdjacencia(),
+                                                        $this->gerarMatrizDeAdjacencia());
+            
+            $matrizDistancia[$vertece->getIndex()] = $algoritmoDijkstra->gerlarLinhaDistancias();
+            
+        }
+        
+        $this->matrizDistancia = $matrizDistancia;
+        
+        return $matrizDistancia;
+        
+    }
+    
+    public function gerarExcentricidade(array $matrisDistancia){
+        
+        $tamanhoMatriz  = count($matrisDistancia);
+        
+        //inicia excentricidade
+        $excentricidade = array();
+        $excentricidadeValores = array_fill(0, $tamanhoMatriz, 0);
+        $excentricidade['saida']    = $excentricidadeValores;
+        $excentricidade['retorno']  = $excentricidadeValores;
+                        
+        for ($i = 0; $i < $tamanhoMatriz; $i++) {
+            for ($j = 0; $j < $tamanhoMatriz; $j++) {
+                
+                $distancia = $matrisDistancia[$i][$j];
+                
+                if($distancia != static::$inifito){
+                    
+                    if($excentricidade['retorno'][$j] < $distancia){
+                        $excentricidade['retorno'][$j] = $distancia; 
+                    }
+
+                    if($excentricidade['saida'][$i] < $distancia){
+                        $excentricidade['saida'][$i] = $distancia; 
+                    }
+                    
+                }
+                
+            }
+        }
+                
+        return $excentricidade;
+        
+    }
+    
+    public function buscarRaioSaida(){
+        
+        $excentricidade = $this->gerarExcentricidade($this->gerarMatrizDistancia());
+        
+        return $this->buscarRaio($excentricidade['saida']);
+        
+    }
+    
+    public function buscarRaioRetorno(){
+        
+        $excentricidade = $this->gerarExcentricidade($this->gerarMatrizDistancia());
+        
+        return $this->buscarRaio($excentricidade['retorno']);
+        
+    }
+    
+    public function buscarRaio($excentricidade){
+        
+        $raio = static::$inifito;
+        
+        foreach ($excentricidade as $valor){
+            if($valor < $raio){
+                $raio = $valor;
+            }
+        }
+        
+        return $raio;
+    }
+    
+    /**
+     * 
+     * @param array $excentricidade
+     * @return array
+     */
+    public function buscarCentro($excentricidade, $raio){
+        
+        $centro = array();
+        
+        for($i = 0; $i < count($excentricidade); $i++){
+            if($excentricidade[$i] === $raio){
+                $centro[] = $this->verteces[$i];
+            }
+        }
+        
+        return $centro;
+    }
+    
+    public function buscarCentroSaida(){
+
+        $excentricidade = $this->gerarExcentricidade($this->gerarMatrizDistancia());
+        
+        $raio = $this->buscarRaio($excentricidade['saida']);
+        
+        return $this->buscarCentro($excentricidade['saida'], $raio);
+        
+    }
+    
+    public function buscarCentroRetorno(){
+
+        $excentricidade = $this->gerarExcentricidade($this->gerarMatrizDistancia());
+        
+        $raio = $this->buscarRaio($excentricidade['retorno']);
+        
+        return $this->buscarCentro($excentricidade['retorno'], $raio);
+        
+    }
+    
+    public function somaMatrizComMatrizTransposta(array $matriz){
+        
+        $matrizSoma = array();
+        $tamanhoMatrix = count($matriz);
+            
+        for ($i = 0; $i < $tamanhoMatrix; $i++) {
+            for ($j = 0; $j < $tamanhoMatrix; $j++) {
+                $matrizSoma[$i][$j] = $matriz[$i][$j]+$matriz[$j][$i];
+            }
+        }
+        
+        return $matrizSoma;
+        
+    }
+
+    public function buscarRaioSaidaRetoro(){
+ 
+        $matriz = $this->somaMatrizComMatrizTransposta($this->gerarMatrizDistancia());
+        
+        $excentricidade = $this->gerarExcentricidade($matriz);
+        
+        return $this->buscarRaio($excentricidade['saida']);
+        
+    }
+    
+    public function buscarCentroSaidaRetorno(){
+
+        $matriz = $this->somaMatrizComMatrizTransposta($this->gerarMatrizDistancia());
+        
+        $excentricidade = $this->gerarExcentricidade($matriz);
+        
+        $raio   = $this->buscarRaio($excentricidade['saida']);
+        
+        return $this->buscarCentro($excentricidade['saida'], $raio);
+        
+    }
+    
     
 }

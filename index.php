@@ -7,22 +7,18 @@ $digrafo = false;
 
 $grafo = null;
 
-//if(isset($_POST['verteces'], $_POST['arestas'])){
+if(isset($_POST['verteces'], $_POST['arestas'])){
 
     $verteces   = $_POST['verteces'];
     $arestas    = $_POST['arestas'];
 
     $digrafo    = !!$_POST['digrafo'];
     
-    $verteces = '{1,2,3,4,5}';
-    $arestas = '{(1,2,31)(1,5,32)(2,3,33)(2,5,34)(2,4,35)(3,4,36)(4,5,37)}';
-    $digrafo = true;
-    
-
 
     $grafo = new Grafo\Grafo($verteces, $arestas, $digrafo);
 
-//}
+}
+
 
 ?>
 
@@ -77,12 +73,12 @@ $grafo = null;
                 <div class="well">
                     <div class="form-group">
                         <label for="vertece">Verteces</label>
-                        <input id="vertece" type="text" class="form-control" name="verteces" placeholder="{1,2,3,4,5}" value="<?php echo $verteces;?>">
+                        <input id="vertece" type="text" class="form-control" name="verteces" placeholder="{x1,x2,x3,x4,x5,x6}" value="<?php echo $verteces;?>">
                     </div>
                     
                     <div class="form-group">
                         <label for="arestas">Arestas</label>
-                        <input id="arestas" type="text" class="form-control" name="arestas" placeholder="{(1,2,15)(1,5,20)(2,3,5)(2,5,10)(2,4,32)(3,4,25)(4,5,8)}" value="<?php echo $arestas;?>">
+                        <input id="arestas" type="text" class="form-control" name="arestas" placeholder="{(x1,x2,1)(x2,x3,1)(x2,x5,1)(x3,x4,1)(x4,x5,1)(x5,x3,1)(x5,x2,1)(x5,x6,1)(x6,x1,1)}" value="<?php echo $arestas;?>">
                     </div>
                     <div class="form-group ">
                         <label for="digrafo">Digrafo</label>
@@ -222,6 +218,179 @@ $grafo = null;
                             ?>
                         </table>
                     </div>
+                    
+                    
+                    
+                    <h2>Matriz de Distância</h2>
+                    <div class="well">
+                        <table>
+                            <?php
+                            $matrizDistancia =  $grafo->gerarMatrizDistancia();
+                            ?>
+                            <tr>
+                                <td></td>
+                                <?php
+                                foreach ($matrizDistancia as $i => $linha){
+                                    $vertece = $grafo->buscaVertecePorIndex($i);
+                                    ?>
+                                    <td class="cel col-ma"><?php echo $vertece->getNome();?></td>
+                                    <?php
+                                }
+                                ?>
+                            </tr>
+                            
+                            <?php
+                            foreach ($matrizDistancia as $i => $linha){
+                                $vertece = $grafo->buscaVertecePorIndex($i);
+                                ?>
+                                <tr>
+                                    <td class="cel row-ma"><?php echo $vertece->getNome();?></td>
+                                    <?php
+                                    foreach ($linha as $valor){
+                                        ?>
+                                        <td class="cel"><?php echo $valor; ?> </td>
+                                        <?php
+                                    }
+                                    ?>
+                                </tr>
+                                <?php
+                            }
+                            ?>
+                        </table>
+                    </div>
+                    
+                    <?php
+                    if($grafo->hasDigrafo()){
+                        
+                        $excentricidade = $grafo->gerarExcentricidade($matrizDistancia);
+                        ?>
+                        <h2>Saida</h2>
+                        <div class="well">
+                            <h3>Excentricidade</h3>
+                            <table>
+                                <?php
+                                foreach ($excentricidade['saida'] as $i => $valor){
+                                    $vertece = $grafo->buscaVertecePorIndex($i);
+                                    ?>
+                                    <tr>
+                                        <td class="cel row-ma"><?php echo $vertece->getNome();?></td>
+                                        <td class="cel"><?php echo $valor;?></td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+                            </table>
+                            <hr>
+                            <div>raio(G) = <?php echo $grafo->buscarRaioSaida();?></div>
+                            <div>Centro = {
+                                <?php
+                                foreach ($grafo->buscarCentroSaida() as $vertece){
+                                    echo $vertece->getNome().',';
+                                }
+                                ?>
+                                }
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        <h2>Retorno</h2>
+                        <div class="well">
+                            <h3>Excentricidade</h3>
+                            <table>
+                                <?php
+                                foreach ($excentricidade['retorno'] as $i => $valor){
+                                    $vertece = $grafo->buscaVertecePorIndex($i);
+                                    ?>
+                                    <tr>
+                                        <td class="cel row-ma"><?php echo $vertece->getNome();?></td>
+                                        <td class="cel"><?php echo $valor;?></td>
+                                    </tr>
+                                    <?php
+                                }
+                                 ?>
+                            </table>
+                            <hr>
+                            <div>raio(G) = <?php echo $grafo->buscarRaioRetorno();?></div>
+                            <div>Centro = {
+                                <?php
+                                foreach ($grafo->buscarCentroRetorno() as $vertece){
+                                    echo $vertece->getNome().',';
+                                }
+                                ?>
+                                }
+                            </div>
+                        </div>
+                        
+                        
+                        <?php
+                        $matrizDistanciaT = $grafo->somaMatrizComMatrizTransposta($matrizDistancia);
+                        $excentricidade = $grafo->gerarExcentricidade($matrizDistanciaT);
+                        ?>
+                        
+                        <h2>Saida e Retorno</h2>
+                        <div class="well">
+                            <h3>Excentricidade</h3>
+                            <table>
+                                <?php
+                                foreach ($excentricidade['saida'] as $i => $valor){
+                                    $vertece = $grafo->buscaVertecePorIndex($i);
+                                    ?>
+                                    <tr>
+                                        <td class="cel row-ma"><?php echo $vertece->getNome();?></td>
+                                        <td class="cel"><?php echo $valor;?></td>
+                                    </tr>
+                                    <?php
+                                }
+                                 ?>
+                            </table>
+                            <hr>
+                            <div>raio(G) = <?php echo $grafo->buscarRaioSaidaRetoro();?></div>
+                            <div>Centro = {
+                                <?php
+                                foreach ($grafo->buscarCentroSaidaRetorno() as $vertece){
+                                    echo $vertece->getNome().',';
+                                }
+                                ?>
+                                }
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        <?php
+                    }else{
+                         $excentricidade = $grafo->gerarExcentricidade($matrizDistancia);
+                        ?>
+                        <div class="well">
+                            <h3>Excentricidade</h3>
+                            <table>
+                                <?php
+                                foreach ($excentricidade['saida'] as $i => $valor){
+                                    $vertece = $grafo->buscaVertecePorIndex($i);
+                                    ?>
+                                    <tr>
+                                        <td class="cel row-ma"><?php echo $vertece->getNome();?></td>
+                                        <td class="cel"><?php echo $valor;?></td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+                            </table>
+                            <hr>
+                            <div>raio(G) = <?php echo $grafo->buscarRaioSaida();?></div>
+                            <div>Centro = {
+                                <?php
+                                foreach ($grafo->buscarCentroSaida() as $vertece){
+                                    echo $vertece->getNome().',';
+                                }
+                                ?>
+                                }
+                            </div>
+                        </div>
+                        <?php
+                    }
+                    ?>
                 </div>
                 <?php
             }
@@ -231,23 +400,3 @@ $grafo = null;
       </div>
     </body>
 </html>
-
-
-    
-<?php
-//
-//
-//$strVerteces   = '{1,2,3,4,5}';
-//$strArestas    = '{(1,2)(1,5)(2,3)(2,5)(2,4)(3,4)(4,5)}';
-//
-//$digrafo = true;
-//
-//
-//$grafo = new Grafo\Grafo($strVerteces, $strArestas, $digrafo);
-////$listaAdjacencia =  $grafo->gerarListaDeAdjacencia();
-////$matrizAdjacencia =  $grafo->gerarMatrizDeAdjacencia();
-////$matrizDeIncidencia = $grafo->gerarMatrizDeIncidencia();
-//
-//$listaDeArestas = $grafo->gerarListaAresta();
-//
-//!ddd($listaDeArestas);
