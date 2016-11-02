@@ -429,6 +429,16 @@ class Grafo{
         return $this->buscarCentro($excentricidade['saida'], $raio);
         
     }
-    
+ 
+    public function gerarArvoreDeCobertura(){
+        $kruskal = new AlgoritmoKruskal($this->verteces, $this->arestas);
+        
+        $arvoreCobertura = $kruskal->gerarArvoreCobertura();
+        
+        ddd($arvoreCobertura);
+        
+        
+        
+    }
     
 }

@@ -132,6 +132,7 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
             
             <?php
             if($grafo){
+                $grafo->gerarArvoreDeCobertura();
                 ?>
                 <div class="well">
 
