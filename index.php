@@ -43,6 +43,9 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                 text-align: center;
                 width: 35px;
             }
+            .cel-arvore{
+                width: 150px;
+            }
             .la-cel{
                background-color: #ef6522;
                width: 50px;
@@ -57,9 +60,27 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                width: 50px;
                background-color: #ff8;  
             }
+            .input-interface{
+                width: 80px;
+            }
+            .content-interface{
+                float: left;
+                width: 125px;
+                margin-right: 15px;
+                border-right: 1px solid #c0d4df;
+            }
+            .content-interface .btn{
+                margin-top: 15px;
+            }
+             .clear{
+                clear: both;
+            }
+            #painel-interface{
+                display: none;
+            }
         </style>
         <title>Grafos</title>
-        
+        <script src="assets/three.min.js"></script>
     </head>
     <body>
 
@@ -71,6 +92,33 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
             <form action="#" method="post">
                   
                 <div class="well">
+                    
+                    <button onclick="showInterface()" class="btn btn-info" type="button">Desenhar</button>
+                    <button onclick="preencherIlhas()" class="btn btn-info" type="button">Preencher dados com problema de ligações com as ilhas</button>
+                    
+                    <br>
+                    
+                    <div id="painel-interface">
+                        <div class="form-group content-interface">
+                            <label>Nome Vertece</label>
+                            <input id="interface-vertece" type="text" class="form-control input-interface" placeholder="x1">
+                            <button type="button" class="btn btn-success" onclick="newVertex()">+ Vertece</button>
+                        </div>
+                        
+                        <div class="form-group content-interface">
+                            <label>Valor Aresta</label>
+                            <input id="interface-aresta" type="text" class="form-control input-interface" placeholder="5">
+                            <button type="button" class="btn btn-success" onclick="newEdge()">+ Aresta</button>
+                        </div>
+                        
+                        <div class="clear"></div>
+                        
+                        <div id="content-interface"></div>
+                        
+                    </div>
+                    
+                    <hr>
+                    
                     <div class="form-group">
                         <label for="vertece">Verteces</label>
                         <input id="vertece" type="text" class="form-control" name="verteces" placeholder="{x1,x2,x3,x4,x5,x6}" value="<?php echo $verteces;?>">
@@ -391,6 +439,26 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                         <?php
                     }
                     ?>
+                        
+                    <h2>Árvore de Cobertura</h2>
+                    <div class="well">
+                        <table>
+                            <?php
+                            $arvoreCobertura = $grafo->gerarArvoreDeCobertura();
+                            foreach ($arvoreCobertura as $aresta){
+                                ?>
+                                <tr>
+                                    <td class="cel cel-arvore">
+                                        <?php echo $aresta->getNome();?> = 
+                                        {<?php echo $aresta->getVertece1()->getNome().', '.$aresta->getVertece2()->getNome();?>} => 
+                                        <?php echo $aresta->getPeso()   ;?>
+                                    </td>
+                                </tr>
+                                <?php
+                            }
+                            ?>
+                        </table>
+                    </div>
                 </div>
                 <?php
             }
@@ -398,5 +466,6 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
         </div>
           
       </div>
+        <script src="assets/grafo.js"></script>
     </body>
 </html>
