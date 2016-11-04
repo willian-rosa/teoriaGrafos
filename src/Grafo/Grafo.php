@@ -433,12 +433,7 @@ class Grafo{
     public function gerarArvoreDeCobertura(){
         $kruskal = new AlgoritmoKruskal($this->verteces, $this->arestas);
         
-        $arvoreCobertura = $kruskal->gerarArvoreCobertura();
-        
-        ddd($arvoreCobertura);
-        
-        
-        
+        return $kruskal->gerarArvoreCobertura();
     }
     
 }

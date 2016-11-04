@@ -43,6 +43,9 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                 text-align: center;
                 width: 35px;
             }
+            .cel-arvore{
+                width: 150px;
+            }
             .la-cel{
                background-color: #ef6522;
                width: 50px;
@@ -72,6 +75,9 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
              .clear{
                 clear: both;
             }
+            #painel-interface{
+                display: none;
+            }
         </style>
         <title>Grafos</title>
         <script src="assets/three.min.js"></script>
@@ -87,7 +93,12 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                   
                 <div class="well">
                     
-                    <div>
+                    <button onclick="showInterface()" class="btn btn-info" type="button">Desenhar</button>
+                    <button onclick="preencherIlhas()" class="btn btn-info" type="button">Preencher dados com problema de ligações com as ilhas</button>
+                    
+                    <br>
+                    
+                    <div id="painel-interface">
                         <div class="form-group content-interface">
                             <label>Nome Vertece</label>
                             <input id="interface-vertece" type="text" class="form-control input-interface" placeholder="x1">
@@ -132,7 +143,6 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
             
             <?php
             if($grafo){
-                $grafo->gerarArvoreDeCobertura();
                 ?>
                 <div class="well">
 
@@ -429,6 +439,26 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                         <?php
                     }
                     ?>
+                        
+                    <h2>Árvore de Cobertura</h2>
+                    <div class="well">
+                        <table>
+                            <?php
+                            $arvoreCobertura = $grafo->gerarArvoreDeCobertura();
+                            foreach ($arvoreCobertura as $aresta){
+                                ?>
+                                <tr>
+                                    <td class="cel cel-arvore">
+                                        <?php echo $aresta->getNome();?> = 
+                                        {<?php echo $aresta->getVertece1()->getNome().', '.$aresta->getVertece2()->getNome();?>} => 
+                                        <?php echo $aresta->getPeso()   ;?>
+                                    </td>
+                                </tr>
+                                <?php
+                            }
+                            ?>
+                        </table>
+                    </div>
                 </div>
                 <?php
             }
