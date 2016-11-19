@@ -31,8 +31,8 @@ class AlgoritmoKruskal {
         
         foreach ($this->arestas as $aresta){
             
-            $vertice1 = $aresta->getVertece1();
-            $vertice2 = $aresta->getVertece2();
+            $vertice1 = $aresta->getVertice1();
+            $vertice2 = $aresta->getVertice2();
             
             if(!$this->verificaVerticesMesmoConjuntos($vertice1, $vertice2)){
                 $arvoreCobertura[] = $aresta;
@@ -46,11 +46,11 @@ class AlgoritmoKruskal {
     
     /**
      * 
-     * @param \Grafo\Vertece $vertice1
-     * @param \Grafo\Vertece $vertice2
+     * @param \Grafo\Vertice $vertice1
+     * @param \Grafo\Vertice $vertice2
      * @return boolean
      */
-    protected function verificaVerticesMesmoConjuntos(Vertece $vertice1,Vertece $vertice2){
+    protected function verificaVerticesMesmoConjuntos(Vertice $vertice1,Vertice $vertice2){
         
         $mesmoConjunto = false;
         
@@ -70,7 +70,7 @@ class AlgoritmoKruskal {
         
     }
     
-    protected function verificaVerticeConjunto(array $conjunto, Vertece $vertice){
+    protected function verificaVerticeConjunto(array $conjunto, Vertice $vertice){
         
         $encontradoVertice = false;
         
@@ -87,21 +87,21 @@ class AlgoritmoKruskal {
         return $encontradoVertice;
     }
 
-    protected function uniaoConjunto(Vertece $vertice1,Vertece $vertice2){
+    protected function uniaoConjunto(Vertice $vertice1,Vertice $vertice2){
         
-        $indexVertece1 = $this->buscaIndeceConjuntosVertices($vertice1);
-        $indexVertece2 = $this->buscaIndeceConjuntosVertices($vertice2);
+        $indexVertice1 = $this->buscaIndeceConjuntosVertices($vertice1);
+        $indexVertice2 = $this->buscaIndeceConjuntosVertices($vertice2);
         
-        $mergeVertice = array_merge($this->conjuntos[$indexVertece1], $this->conjuntos[$indexVertece2]);
+        $mergeVertice = array_merge($this->conjuntos[$indexVertice1], $this->conjuntos[$indexVertice2]);
         
         $this->conjuntos[] = $mergeVertice;
         
-        unset($this->conjuntos[$indexVertece1]);
-        unset($this->conjuntos[$indexVertece2]);
+        unset($this->conjuntos[$indexVertice1]);
+        unset($this->conjuntos[$indexVertice2]);
         
     }
     
-    protected function buscaIndeceConjuntosVertices(Vertece $vertice){
+    protected function buscaIndeceConjuntosVertices(Vertice $vertice){
         
         foreach ($this->conjuntos as $key => $conjunto){
             if($this->verificaVerticeConjunto($conjunto, $vertice)){
@@ -140,7 +140,7 @@ class AlgoritmoKruskal {
     }
     
     /**
-     * @param Vertece[] $vertices
+     * @param Vertice[] $vertices
      * @return array retorna array de vertices
      */
     public function criarConjuntosVertices(array $vertices){

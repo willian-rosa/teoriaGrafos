@@ -1,21 +1,21 @@
 <?php
 include 'vendor/autoload.php';
 
-$verteces = '';
+$vertices = '';
 $arestas = '';
 $digrafo = false;
 
 $grafo = null;
 
-if(isset($_POST['verteces'], $_POST['arestas'])){
+if(isset($_POST['vertices'], $_POST['arestas'])){
 
-    $verteces   = $_POST['verteces'];
+    $vertices   = $_POST['vertices'];
     $arestas    = $_POST['arestas'];
 
     $digrafo    = !!$_POST['digrafo'];
     
 
-    $grafo = new Grafo\Grafo($verteces, $arestas, $digrafo);
+    $grafo = new Grafo\Grafo($vertices, $arestas, $digrafo);
 
 }
 
@@ -100,9 +100,9 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                     
                     <div id="painel-interface">
                         <div class="form-group content-interface">
-                            <label>Nome Vertece</label>
-                            <input id="interface-vertece" type="text" class="form-control input-interface" placeholder="x1">
-                            <button type="button" class="btn btn-success" onclick="newVertex()">+ Vertece</button>
+                            <label>Nome Vertice</label>
+                            <input id="interface-vertice" type="text" class="form-control input-interface" placeholder="x1">
+                            <button type="button" class="btn btn-success" onclick="newVertex()">+ Vertice</button>
                         </div>
                         
                         <div class="form-group content-interface">
@@ -120,8 +120,8 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                     <hr>
                     
                     <div class="form-group">
-                        <label for="vertece">Verteces</label>
-                        <input id="vertece" type="text" class="form-control" name="verteces" placeholder="{x1,x2,x3,x4,x5,x6}" value="<?php echo $verteces;?>">
+                        <label for="vertice">Vertices</label>
+                        <input id="vertice" type="text" class="form-control" name="vertices" placeholder="{x1,x2,x3,x4,x5,x6}" value="<?php echo $vertices;?>">
                     </div>
                     
                     <div class="form-group">
@@ -151,14 +151,14 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                         <table>
                             <?php
                             $listaAdjacencia =  $grafo->gerarListaDeAdjacencia();
-                            foreach ($listaAdjacencia as $i => $verteces){
-                                $vertece = $grafo->buscaVertecePorIndex($i);
+                            foreach ($listaAdjacencia as $i => $vertices){
+                                $vertice = $grafo->buscaVerticePorIndex($i);
                                 ?>
                                 <tr>
-                                    <td class="cel la-cel" ><?php echo $vertece->getNome();?></td>
+                                    <td class="cel la-cel" ><?php echo $vertice->getNome();?></td>
                                     <?php
-                                    foreach ($verteces as $vertece){
-                                        ?><td class="cel"><?php echo $vertece->getNome();?></td><?php
+                                    foreach ($vertices as $vertice){
+                                        ?><td class="cel"><?php echo $vertice->getNome();?></td><?php
                                     }
                                     ?>
                                 </tr>
@@ -178,9 +178,9 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                                 <td></td>
                                 <?php
                                 foreach ($matrizAdjacencia as $i => $linha){
-                                    $vertece = $grafo->buscaVertecePorIndex($i);
+                                    $vertice = $grafo->buscaVerticePorIndex($i);
                                     ?>
-                                    <td class="cel col-ma"><?php echo $vertece->getNome();?></td>
+                                    <td class="cel col-ma"><?php echo $vertice->getNome();?></td>
                                     <?php
                                 }
                                 ?>
@@ -188,10 +188,10 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                             
                             <?php
                             foreach ($matrizAdjacencia as $i => $linha){
-                                $vertece = $grafo->buscaVertecePorIndex($i);
+                                $vertice = $grafo->buscaVerticePorIndex($i);
                                 ?>
                                 <tr>
-                                    <td class="cel row-ma"><?php echo $vertece->getNome();?></td>
+                                    <td class="cel row-ma"><?php echo $vertice->getNome();?></td>
                                     <?php
                                     foreach ($linha as $valor){
                                         ?>
@@ -227,10 +227,10 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                             
                             <?php
                             foreach ($matrizDeIncidencia as $i => $linha){
-                                $vertece = $grafo->buscaVertecePorIndex($i);
+                                $vertice = $grafo->buscaVerticePorIndex($i);
                                 ?>
                                 <tr>
-                                    <td class="cel row-ma"><?php echo $vertece->getNome();?></td>
+                                    <td class="cel row-ma"><?php echo $vertice->getNome();?></td>
                                     <?php
                                     foreach ($linha as $valor){
                                         ?>
@@ -255,8 +255,8 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                                 ?>
                                 <tr>
                                     <?php
-                                    foreach ($conjunto as $vertece){
-                                        ?><td class="cel"><?php echo $vertece->getNome();?></td><?php
+                                    foreach ($conjunto as $vertice){
+                                        ?><td class="cel"><?php echo $vertice->getNome();?></td><?php
                                     }
                                     ?>
                                 </tr>
@@ -279,9 +279,9 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                                 <td></td>
                                 <?php
                                 foreach ($matrizDistancia as $i => $linha){
-                                    $vertece = $grafo->buscaVertecePorIndex($i);
+                                    $vertice = $grafo->buscaVerticePorIndex($i);
                                     ?>
-                                    <td class="cel col-ma"><?php echo $vertece->getNome();?></td>
+                                    <td class="cel col-ma"><?php echo $vertice->getNome();?></td>
                                     <?php
                                 }
                                 ?>
@@ -289,10 +289,10 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                             
                             <?php
                             foreach ($matrizDistancia as $i => $linha){
-                                $vertece = $grafo->buscaVertecePorIndex($i);
+                                $vertice = $grafo->buscaVerticePorIndex($i);
                                 ?>
                                 <tr>
-                                    <td class="cel row-ma"><?php echo $vertece->getNome();?></td>
+                                    <td class="cel row-ma"><?php echo $vertice->getNome();?></td>
                                     <?php
                                     foreach ($linha as $valor){
                                         ?>
@@ -318,10 +318,10 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                             <table>
                                 <?php
                                 foreach ($excentricidade['saida'] as $i => $valor){
-                                    $vertece = $grafo->buscaVertecePorIndex($i);
+                                    $vertice = $grafo->buscaVerticePorIndex($i);
                                     ?>
                                     <tr>
-                                        <td class="cel row-ma"><?php echo $vertece->getNome();?></td>
+                                        <td class="cel row-ma"><?php echo $vertice->getNome();?></td>
                                         <td class="cel"><?php echo $valor;?></td>
                                     </tr>
                                     <?php
@@ -332,8 +332,8 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                             <div>raio(G) = <?php echo $grafo->buscarRaioSaida();?></div>
                             <div>Centro = {
                                 <?php
-                                foreach ($grafo->buscarCentroSaida() as $vertece){
-                                    echo $vertece->getNome().',';
+                                foreach ($grafo->buscarCentroSaida() as $vertice){
+                                    echo $vertice->getNome().',';
                                 }
                                 ?>
                                 }
@@ -348,10 +348,10 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                             <table>
                                 <?php
                                 foreach ($excentricidade['retorno'] as $i => $valor){
-                                    $vertece = $grafo->buscaVertecePorIndex($i);
+                                    $vertice = $grafo->buscaVerticePorIndex($i);
                                     ?>
                                     <tr>
-                                        <td class="cel row-ma"><?php echo $vertece->getNome();?></td>
+                                        <td class="cel row-ma"><?php echo $vertice->getNome();?></td>
                                         <td class="cel"><?php echo $valor;?></td>
                                     </tr>
                                     <?php
@@ -362,8 +362,8 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                             <div>raio(G) = <?php echo $grafo->buscarRaioRetorno();?></div>
                             <div>Centro = {
                                 <?php
-                                foreach ($grafo->buscarCentroRetorno() as $vertece){
-                                    echo $vertece->getNome().',';
+                                foreach ($grafo->buscarCentroRetorno() as $vertice){
+                                    echo $vertice->getNome().',';
                                 }
                                 ?>
                                 }
@@ -382,10 +382,10 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                             <table>
                                 <?php
                                 foreach ($excentricidade['saida'] as $i => $valor){
-                                    $vertece = $grafo->buscaVertecePorIndex($i);
+                                    $vertice = $grafo->buscaVerticePorIndex($i);
                                     ?>
                                     <tr>
-                                        <td class="cel row-ma"><?php echo $vertece->getNome();?></td>
+                                        <td class="cel row-ma"><?php echo $vertice->getNome();?></td>
                                         <td class="cel"><?php echo $valor;?></td>
                                     </tr>
                                     <?php
@@ -396,8 +396,8 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                             <div>raio(G) = <?php echo $grafo->buscarRaioSaidaRetoro();?></div>
                             <div>Centro = {
                                 <?php
-                                foreach ($grafo->buscarCentroSaidaRetorno() as $vertece){
-                                    echo $vertece->getNome().',';
+                                foreach ($grafo->buscarCentroSaidaRetorno() as $vertice){
+                                    echo $vertice->getNome().',';
                                 }
                                 ?>
                                 }
@@ -415,10 +415,10 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                             <table>
                                 <?php
                                 foreach ($excentricidade['saida'] as $i => $valor){
-                                    $vertece = $grafo->buscaVertecePorIndex($i);
+                                    $vertice = $grafo->buscaVerticePorIndex($i);
                                     ?>
                                     <tr>
-                                        <td class="cel row-ma"><?php echo $vertece->getNome();?></td>
+                                        <td class="cel row-ma"><?php echo $vertice->getNome();?></td>
                                         <td class="cel"><?php echo $valor;?></td>
                                     </tr>
                                     <?php
@@ -429,8 +429,8 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                             <div>raio(G) = <?php echo $grafo->buscarRaioSaida();?></div>
                             <div>Centro = {
                                 <?php
-                                foreach ($grafo->buscarCentroSaida() as $vertece){
-                                    echo $vertece->getNome().',';
+                                foreach ($grafo->buscarCentroSaida() as $vertice){
+                                    echo $vertice->getNome().',';
                                 }
                                 ?>
                                 }
@@ -450,7 +450,7 @@ if(isset($_POST['verteces'], $_POST['arestas'])){
                                 <tr>
                                     <td class="cel cel-arvore">
                                         <?php echo $aresta->getNome();?> = 
-                                        {<?php echo $aresta->getVertece1()->getNome().', '.$aresta->getVertece2()->getNome();?>} => 
+                                        {<?php echo $aresta->getVertice1()->getNome().', '.$aresta->getVertice2()->getNome();?>} => 
                                         <?php echo $aresta->getPeso()   ;?>
                                     </td>
                                 </tr>

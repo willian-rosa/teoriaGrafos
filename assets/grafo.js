@@ -89,7 +89,7 @@ function removeEdge(groupEdgeSelecionado){
 }
 
 function newVertex(){
-    var input = document.getElementById('interface-vertece');
+    var input = document.getElementById('interface-vertice');
     prepareNewVertex = {type: 'vertex', 'value': input.value};
     input.value = '';
 }
@@ -211,7 +211,7 @@ function generateVertexToString(){
 
     var str = '{'+names.join(',')+'}';
 
-    var e = document.getElementById('vertece');
+    var e = document.getElementById('vertice');
     e.value = str;
 
 }
@@ -307,7 +307,7 @@ function showInterface(){
 }
 
 function preencherIlhas(){
-    document.getElementById('vertece').value = '{1,2,3,4,5,6,7,8}';
+    document.getElementById('vertice').value = '{1,2,3,4,5,6,7,8}';
     document.getElementById('arestas').value = '{(1,2,240)(1,3,210)(1,4,340)(1,5,280)(1,6,200)(1,7,345)(1,8,120)(2,3,265)(2,4,175)(2,5,215)(2,6,180)(2,7,185)(2,8,155)(3,4,260)(3,5,115)(3,6,350)(3,7,435)(3,8,195)(4,5,160)(4,6,330)(4,7,295)(4,8,230)(5,6,360)(5,7,400)(5,8,170)(6,7,175)(6,8,205)(7,8,305)}';
     return false;
 }

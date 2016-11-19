@@ -7,7 +7,7 @@ class Grafo{
     private static $prefixNomeAresta = 'e';
 
 
-    private $verteces = array();
+    private $vertices = array();
     
     /**
      *
@@ -21,8 +21,8 @@ class Grafo{
     private $matrizDistancia;
 
 
-    public function __construct($strVerteces, $strArestas, $digrafo) {
-        $this->verteces = $this->converteStringEmVerteces($strVerteces);
+    public function __construct($strVertices, $strArestas, $digrafo) {
+        $this->vertices = $this->converteStringEmVertices($strVertices);
         $this->arestas  = $this->converteStringEmArestas($strArestas);
                 
         $this->digrafo = $digrafo;
@@ -38,28 +38,28 @@ class Grafo{
     }
 
     /**
-     * @param type $strVerteces
-     * @return \Grafo\Vertece[]
+     * @param type $strVertices
+     * @return \Grafo\Vertice[]
      * @throws Exception
      */
-    private function converteStringEmVerteces($strVerteces){
+    private function converteStringEmVertices($strVertices){
     
-        $string = $this->removeChaveString($strVerteces);
+        $string = $this->removeChaveString($strVertices);
         
         $explode = \preg_split('/,/', $string);
         
         if(!is_array($explode)){
-            throw new \Exception('Erro ao converter string para verteces');
+            throw new \Exception('Erro ao converter string para vertices');
         }
         
-        $verteces = array();
-        $indexVertece = 0;
+        $vertices = array();
+        $indexVertice = 0;
         
-        foreach ($explode as $nomeVertece){
-            $verteces[] = new Vertece($indexVertece++, $nomeVertece);
+        foreach ($explode as $nomeVertice){
+            $vertices[] = new Vertice($indexVertice++, $nomeVertice);
         }
         
-        return $verteces;
+        return $vertices;
     }
     
     private function converteStringEmArestas($strArestas){
@@ -80,15 +80,15 @@ class Grafo{
             
             $nomesArestas = \preg_split('/,/', $chaveAresta);
             
-            $vertece1   = $this->buscaVertecePorNome($nomesArestas[0]);
-            $vertece2   = $this->buscaVertecePorNome($nomesArestas[1]);
+            $vertice1   = $this->buscaVerticePorNome($nomesArestas[0]);
+            $vertice2   = $this->buscaVerticePorNome($nomesArestas[1]);
             $peso       = $nomesArestas[2];
 
             $index = $indexAresta++;
             
             $nomeAresta = static::$prefixNomeAresta.($indexAresta);
             
-            $aresta = new Aresta($index, $nomeAresta, $vertece1, $vertece2, $peso);
+            $aresta = new Aresta($index, $nomeAresta, $vertice1, $vertice2, $peso);
             
             $arestas[] = $aresta;
             
@@ -98,18 +98,18 @@ class Grafo{
         
     }
     
-    private function buscaVertecePorNome($nome){
+    private function buscaVerticePorNome($nome){
         
-        $verteces = $this->verteces;
-        reset($verteces);
+        $vertices = $this->vertices;
+        reset($vertices);
         
-        while ($vertece = current($verteces)) {
+        while ($vertice = current($vertices)) {
 
-            if($vertece->getNome() === $nome){
-                return $vertece;
+            if($vertice->getNome() === $nome){
+                return $vertice;
             }
             
-            next($verteces);
+            next($vertices);
             
         }
         
@@ -129,16 +129,16 @@ class Grafo{
         
         $adjacencia = array();
         
-        foreach ($this->verteces as $vertece){
+        foreach ($this->vertices as $vertice){
             foreach ($this->arestas as $aresta){
                 
-                if($aresta->getVertece1() === $vertece){
-                    $adjacencia[$vertece->getIndex()][] = $aresta->getVertece2();
+                if($aresta->getVertice1() === $vertice){
+                    $adjacencia[$vertice->getIndex()][] = $aresta->getVertice2();
                 }
                 
                 
-                if(!$this->digrafo && $aresta->getVertece2() === $vertece){
-                    $adjacencia[$vertece->getIndex()][] = $aresta->getVertece1();
+                if(!$this->digrafo && $aresta->getVertice2() === $vertice){
+                    $adjacencia[$vertice->getIndex()][] = $aresta->getVertice1();
                 }
                 
             }
@@ -156,17 +156,17 @@ class Grafo{
             return $this->matrizAdjacencia;
         }
         
-        $totalVerteces = count($this->verteces);
+        $totalVertices = count($this->vertices);
         
-        $vetor  = array_fill(0, $totalVerteces, 0);
-        $matriz = array_fill(0, $totalVerteces, $vetor);
+        $vetor  = array_fill(0, $totalVertices, 0);
+        $matriz = array_fill(0, $totalVertices, $vetor);
         
         foreach ($this->arestas as $aresta){
             
-            $matriz[$aresta->getVertece1()->getIndex()][$aresta->getVertece2()->getIndex()] = $aresta->getPeso();
+            $matriz[$aresta->getVertice1()->getIndex()][$aresta->getVertice2()->getIndex()] = $aresta->getPeso();
             
             if(!$this->digrafo){
-                $matriz[$aresta->getVertece2()->getIndex()][$aresta->getVertece1()->getIndex()] = $aresta->getPeso();
+                $matriz[$aresta->getVertice2()->getIndex()][$aresta->getVertice1()->getIndex()] = $aresta->getPeso();
             }
             
         }
@@ -179,21 +179,21 @@ class Grafo{
     
     public function gerarMatrizDeIncidencia(){
         
-        $totalVerteces  = count($this->verteces);
+        $totalVertices  = count($this->vertices);
         $totalArestas   = count($this->arestas);
         
         $vetor  = array_fill(0, $totalArestas, 0);
-        $matriz = array_fill(0, $totalVerteces, $vetor);
+        $matriz = array_fill(0, $totalVertices, $vetor);
         
         foreach ($this->arestas as $aresta){
 
             if($this->digrafo){
-                $matriz[$aresta->getVertece1()->getIndex()][$aresta->getIndex()]--;
+                $matriz[$aresta->getVertice1()->getIndex()][$aresta->getIndex()]--;
             }  else {
-                $matriz[$aresta->getVertece1()->getIndex()][$aresta->getIndex()]++;
+                $matriz[$aresta->getVertice1()->getIndex()][$aresta->getIndex()]++;
             }
             
-            $matriz[$aresta->getVertece2()->getIndex()][$aresta->getIndex()]++;
+            $matriz[$aresta->getVertice2()->getIndex()][$aresta->getIndex()]++;
             
         }
         
@@ -209,8 +209,8 @@ class Grafo{
         
         foreach ($this->arestas as $aresta){
             
-            $inicio[]   = $aresta->getVertece1();
-            $termino[]      = $aresta->getVertece2();
+            $inicio[]   = $aresta->getVertice1();
+            $termino[]      = $aresta->getVertice2();
             
         }
         
@@ -222,20 +222,20 @@ class Grafo{
     
     /**
      * @param type $index
-     * @return Vertece
+     * @return Vertice
      */
-    public function buscaVertecePorIndex($index){
+    public function buscaVerticePorIndex($index){
         
-        $verteces = $this->verteces;
-        reset($verteces);
+        $vertices = $this->vertices;
+        reset($vertices);
         
-        while ($vertece = current($verteces)) {
+        while ($vertice = current($vertices)) {
 
-            if($vertece->getIndex() === $index){
-                return $vertece;
+            if($vertice->getIndex() === $index){
+                return $vertice;
             }
             
-            next($verteces);
+            next($vertices);
             
         }
         
@@ -275,14 +275,14 @@ class Grafo{
         
         $matrizDistancia = array();
         
-        foreach ($this->verteces as $vertece){
+        foreach ($this->vertices as $vertice){
             
-            $algoritmoDijkstra = new AlgoritmoDijkstra($vertece,
-                                                        $this->verteces,
+            $algoritmoDijkstra = new AlgoritmoDijkstra($vertice,
+                                                        $this->vertices,
                                                         $this->gerarListaDeAdjacencia(),
                                                         $this->gerarMatrizDeAdjacencia());
             
-            $matrizDistancia[$vertece->getIndex()] = $algoritmoDijkstra->gerlarLinhaDistancias();
+            $matrizDistancia[$vertice->getIndex()] = $algoritmoDijkstra->gerlarLinhaDistancias();
             
         }
         
@@ -366,7 +366,7 @@ class Grafo{
         
         for($i = 0; $i < count($excentricidade); $i++){
             if($excentricidade[$i] === $raio){
-                $centro[] = $this->verteces[$i];
+                $centro[] = $this->vertices[$i];
             }
         }
         
@@ -431,7 +431,7 @@ class Grafo{
     }
  
     public function gerarArvoreDeCobertura(){
-        $kruskal = new AlgoritmoKruskal($this->verteces, $this->arestas);
+        $kruskal = new AlgoritmoKruskal($this->vertices, $this->arestas);
         
         return $kruskal->gerarArvoreCobertura();
     }

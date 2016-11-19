@@ -7,29 +7,29 @@ class Aresta {
     private $index;
     private $nome;
     private $peso;
-    private $vertece1;
-    private $vertece2;
+    private $vertice1;
+    private $vertice2;
     
-    public function __construct($index, $nome, Vertece $vertece1, Vertece $vertece2, $peso) {
+    public function __construct($index, $nome, Vertice $vertice1, Vertice $vertice2, $peso) {
         $this->index    = $index;
         $this->nome     = $nome;
-        $this->vertece1 = $vertece1;
-        $this->vertece2 = $vertece2;
+        $this->vertice1 = $vertice1;
+        $this->vertice2 = $vertice2;
         $this->peso     = $peso;
     }
     
     /**
-     * @return Vertece
+     * @return Vertice
      */
-    public function getVertece1() {
-        return $this->vertece1;
+    public function getVertice1() {
+        return $this->vertice1;
     }
 
     /**
-     * @return Vertece
+     * @return Vertice
      */
-    public function getVertece2() {
-        return $this->vertece2;
+    public function getVertice2() {
+        return $this->vertice2;
     }
     
     /**

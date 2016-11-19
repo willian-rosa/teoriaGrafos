@@ -2,7 +2,7 @@
 
 namespace Grafo;
 
-class Vertece {
+class Vertice {
     
     private $nome;
     private $index;

@@ -6,47 +6,47 @@ class AlgoritmoDijkstra {
     public static $inifito = 100000;
     
     private $tabela             = array();
-    private $verteces           = array();
+    private $vertices           = array();
     private $matrizAdjacencia   = array();
     private $listaAdjacencia;
-    private $verteceInicial;
+    private $verticeInicial;
 
 
-    public function __construct(Vertece $verteceInicial, array $verteces, array $listaAdjacencia, array $matrizAdjacencia) {
+    public function __construct(Vertice $verticeInicial, array $vertices, array $listaAdjacencia, array $matrizAdjacencia) {
         
-        $this->verteceInicial   = $verteceInicial;
-        $this->verteces         = $verteces;
+        $this->verticeInicial   = $verticeInicial;
+        $this->vertices         = $vertices;
         $this->listaAdjacencia  = $listaAdjacencia;
         $this->matrizAdjacencia = $matrizAdjacencia;
         
-        $this->tabela           = $this->gerarTabela($verteceInicial);
+        $this->tabela           = $this->gerarTabela($verticeInicial);
         
         $this->popularTabela();
         
     }
     
-    private function gerarTabela(Vertece $verteceInicial){
+    private function gerarTabela(Vertice $verticeInicial){
 
         $tabela = array();
         
-        foreach ($this->verteces as $vertece){
-            $tabela[] = $this->gerarLinhaTabela($vertece, $verteceInicial);
+        foreach ($this->vertices as $vertice){
+            $tabela[] = $this->gerarLinhaTabela($vertice, $verticeInicial);
         }
         
         return $tabela;
         
     }
     
-    private function gerarLinhaTabela(Vertece $verteceAtual, Vertece $verteceInicial){
+    private function gerarLinhaTabela(Vertice $verticeAtual, Vertice $verticeInicial){
         
         $linha = array();
         
-        $linha['vertece']  = $verteceAtual;
+        $linha['vertice']  = $verticeAtual;
         $linha['permanente'] = false;
 
-        if($verteceInicial === $verteceAtual){
+        if($verticeInicial === $verticeAtual){
             $linha['distancia']  = 0;
-            $linha['caminho']    = $verteceInicial;
+            $linha['caminho']    = $verticeInicial;
         }else{
             $linha['distancia']  = static::$inifito;
             $linha['caminho']    = null;
@@ -56,22 +56,22 @@ class AlgoritmoDijkstra {
         
     }
     
-    private function buscaListaAdjacenteNaoPermanente(Vertece $vertece){
+    private function buscaListaAdjacenteNaoPermanente(Vertice $vertice){
 
         
         $adjacentesNaoPermanente = array();
         
-        //Caso o vertece não tenha adjacentes
-        if(!isset($this->listaAdjacencia[$vertece->getIndex()])){
+        //Caso o vertice não tenha adjacentes
+        if(!isset($this->listaAdjacencia[$vertice->getIndex()])){
             return $adjacentesNaoPermanente;
         }
         
-        $adjacentes = $this->listaAdjacencia[$vertece->getIndex()];
+        $adjacentes = $this->listaAdjacencia[$vertice->getIndex()];
         
         
         foreach ($adjacentes as $adjacente){
             foreach ($this->tabela as $item){
-                if($item['vertece']->getIndex() === $adjacente->getIndex() && $item['permanente'] === false){
+                if($item['vertice']->getIndex() === $adjacente->getIndex() && $item['permanente'] === false){
                     $adjacentesNaoPermanente[] = $adjacente;
                 }
             }
@@ -81,49 +81,49 @@ class AlgoritmoDijkstra {
                 
     }
 
-    private function buscaPesoAresta(Vertece $vertece1, Vertece $vertece2){
-        return $this->matrizAdjacencia[$vertece1->getIndex()][$vertece2->getIndex()];
+    private function buscaPesoAresta(Vertice $vertice1, Vertice $vertice2){
+        return $this->matrizAdjacencia[$vertice1->getIndex()][$vertice2->getIndex()];
     }
     
     /**
-     * Busca vertece menor distancia que não estão permanente
+     * Busca vertice menor distancia que não estão permanente
      */
-    private function buscaVerteceMenorDistanciaNaoPermanente(array $verteces){
+    private function buscaVerticeMenorDistanciaNaoPermanente(array $vertices){
 
-        //Pega o primeiro vertece
-        $verteceMenorDistancia = reset($verteces);
+        //Pega o primeiro vertice
+        $verticeMenorDistancia = reset($vertices);
         $distancia = static::$inifito;
          
-        foreach ($verteces as $vertece){
+        foreach ($vertices as $vertice){
             
-            $tabelaVertece = $this->tabela[$vertece->getIndex()];
+            $tabelaVertice = $this->tabela[$vertice->getIndex()];
             
-            if($tabelaVertece['permanente'] === false &&  $tabelaVertece['distancia'] < $distancia){
-                $verteceMenorDistancia = $vertece;
-                $distancia = $tabelaVertece['distancia'];
+            if($tabelaVertice['permanente'] === false &&  $tabelaVertice['distancia'] < $distancia){
+                $verticeMenorDistancia = $vertice;
+                $distancia = $tabelaVertice['distancia'];
             }
         }
         
-        return $verteceMenorDistancia;
+        return $verticeMenorDistancia;
         
     }
 
-    private function algoritmoDijkstra(Vertece $vertece){
+    private function algoritmoDijkstra(Vertice $vertice){
         
-        $listaAdjacente = $this->buscaListaAdjacenteNaoPermanente($vertece);
+        $listaAdjacente = $this->buscaListaAdjacenteNaoPermanente($vertice);
             
         foreach ($listaAdjacente as $adjacente){
 
             $distanciaAdjacente = $this->tabela[$adjacente->getIndex()]['distancia'];
-            $distanciaVerteceInicial = $this->tabela[$vertece->getIndex()]['distancia'];
+            $distanciaVerticeInicial = $this->tabela[$vertice->getIndex()]['distancia'];
 
-            $pesoAresta = $this->buscaPesoAresta($vertece, $adjacente);
+            $pesoAresta = $this->buscaPesoAresta($vertice, $adjacente);
 
-            $somaPeso = $distanciaVerteceInicial + $pesoAresta;
+            $somaPeso = $distanciaVerticeInicial + $pesoAresta;
 
             if($distanciaAdjacente > $somaPeso){
                 $this->tabela[$adjacente->getIndex()]['distancia'] = $somaPeso;
-                $this->tabela[$adjacente->getIndex()]['caminho'] = $vertece;
+                $this->tabela[$adjacente->getIndex()]['caminho'] = $vertice;
             }
         }
         
@@ -131,17 +131,17 @@ class AlgoritmoDijkstra {
     
     private function popularTabela(){
         
-        $verteces = $this->verteces;
+        $vertices = $this->vertices;
         
-        while ($vertece = $this->buscaVerteceMenorDistanciaNaoPermanente($verteces)){
+        while ($vertice = $this->buscaVerticeMenorDistanciaNaoPermanente($vertices)){
             
-            $this->algoritmoDijkstra($vertece);
+            $this->algoritmoDijkstra($vertice);
             
             //Atualiza tabela permanente
-            $this->tabela[$vertece->getIndex()]['permanente'] = true;
+            $this->tabela[$vertice->getIndex()]['permanente'] = true;
             
-            //Remove vertece da lista de vertece
-            unset($verteces[$vertece->getIndex()]);
+            //Remove vertice da lista de vertice
+            unset($vertices[$vertice->getIndex()]);
             
         }
     }
