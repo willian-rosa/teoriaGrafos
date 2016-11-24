@@ -134,11 +134,13 @@ class Grafo{
                 
                 if($aresta->getVertice1() === $vertice){
                     $adjacencia[$vertice->getIndex()][] = $aresta->getVertice2();
+                    $aresta->getVertice1()->addAdjacente($aresta->getVertice2());
                 }
                 
                 
                 if(!$this->digrafo && $aresta->getVertice2() === $vertice){
                     $adjacencia[$vertice->getIndex()][] = $aresta->getVertice1();
+                    $aresta->getVertice2()->addAdjacente($aresta->getVertice1());
                 }
                 
             }
@@ -435,5 +437,18 @@ class Grafo{
         
         return $kruskal->gerarArvoreCobertura();
     }
+    
+    /**
+     * 
+     * @return Cor[]
+     */
+    public function gerarAlgoritmoColorir(){
+        
+        $algoritmoColorir = new AlgoritmoColorir($this->gerarListaDeAdjacencia(), $this->vertices);
+        
+        return $algoritmoColorir->buscar();
+    }
+    
+    
     
 }

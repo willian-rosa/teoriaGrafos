@@ -6,3 +6,4 @@ composer.phar
 # composer.lock
 /nbproject/private/
 /nbproject/
+/assets/bower_components/
