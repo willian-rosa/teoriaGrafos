@@ -48,6 +48,25 @@ class AlgoritmoColorir{
     
     /**
      * 
+     * @param \Grafo\Cor[] $cores
+     * @param \Grafo\Cor $cor
+     * @return int|null
+     */
+    private function buscaIndexArrayCor(array $cores, Cor $corVertice){
+        
+        foreach ($cores as $chave => $cor){
+            if($cor->getNome() === $corVertice->getNome()){
+                return $chave;
+            }
+        }
+        
+        ddd($cores, $corVertice);
+            
+        return null;
+    }
+
+        /**
+     * 
      * @param Vertice[] $adjacentes
      * @return type
      */
@@ -59,7 +78,8 @@ class AlgoritmoColorir{
             
             foreach ($adjacentes as $adjacente){
                 if($adjacente->getCor()){
-                    $chaveCor = array_search($adjacente->getCor(), $cores);
+                    $chaveCor = array_search($adjacente->getCor(), $this->cores);
+                    //$chaveCor = $this->buscaIndexArrayCor($this->cores, $adjacente->getCor());
                     unset($cores[$chaveCor]);
                 }
             }
@@ -96,6 +116,7 @@ class AlgoritmoColorir{
             
             if(!$cor){
                 $cor = $this->criarCor();
+                
             }
             
             $cor->addVertice($vertice);
@@ -127,7 +148,6 @@ class AlgoritmoColorir{
         while ($vertice = $this->maiorNumeroAdjacentes($this->vertices)){
             $this->colorirVerticeEmProfundidade($vertice);
         }
-                
         
         return $this->cores;
         
@@ -178,8 +198,9 @@ class AlgoritmoColorir{
     public function buscar(){
         
         $coresBuscaEmProfundide = $this->buscarEmProfundidade();
+        
         $coresBuscaEmLargura    = $this->buscarEmLargura(); 
-
+        
         if(count($coresBuscaEmProfundide) < count($coresBuscaEmLargura)){
             return $this->buscarEmProfundidade();
         }
