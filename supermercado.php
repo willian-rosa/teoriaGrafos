@@ -103,7 +103,7 @@ if(isset($_POST['vertices'], $_POST['arestas'])){
                 </div>
                 
                 <div class="form-group">
-                    <label for="vertice">Não pode estar na mesma gôndolas dos produtos:</label>
+                    <label for="vertice">Não pode estar na mesma gôndola dos produtos:</label>
                     <div isteven-multi-select input-model="produtos" output-model="novoProduto.adjacentes" button-label="nome"
                         item-label="nome" tick-property="ticked"></div>
                 </div>
@@ -117,7 +117,7 @@ if(isset($_POST['vertices'], $_POST['arestas'])){
                 <div class="row" style="margin-left: 10px;">
                    
                     <ul class="list-group col-md-4" ng-repeat="(key, prateleira) in prateleiras">
-                        <li class="list-group-item nome-prateleira">Prateleira {{key+1}}</li>
+                        <li class="list-group-item nome-prateleira">Gôndola {{key+1}}</li>
                         <li class="list-group-item" ng-repeat="vertice in prateleira.vertices">{{vertice}}</li>
                     </ul>
 
