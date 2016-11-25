@@ -52,11 +52,19 @@ angular.module('TeoriaGrafos', ['isteven-multi-select']).controller('produtos', 
    $scope.prateleiras = [];
    
    $scope.cadastrarProduto = function (produto){
-       $scope.produtos.push(produto);
-       $scope.novoProduto = factoryNovoProduto();
+       
+        produto.nome = produto.nome.trim();
+       
+        if(produto.nome === ''){
+            return ;
+        }
        
        
-       var vertices = converteStringVertices($scope.produtos),
+        $scope.produtos.push(produto);
+        $scope.novoProduto = factoryNovoProduto();
+       
+       
+        var vertices = converteStringVertices($scope.produtos),
             arestas = converteStringArestas($scope.produtos);
     
         if(vertices){

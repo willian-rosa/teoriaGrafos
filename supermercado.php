@@ -79,6 +79,11 @@ if(isset($_POST['vertices'], $_POST['arestas'])){
             #painel-interface{
                 display: none;
             }
+            .nome-prateleira{
+                text-align: center;
+                font-weight: bold;
+                background: #c0d4df;
+            }
         </style>
         <title>Grafos</title>
         <script src="assets/three.min.js"></script>
@@ -98,7 +103,7 @@ if(isset($_POST['vertices'], $_POST['arestas'])){
                 </div>
                 
                 <div class="form-group">
-                    <label for="vertice">Não pode estar na mesma prateleira dos produtos:</label>
+                    <label for="vertice">Não pode estar na mesma gôndolas dos produtos:</label>
                     <div isteven-multi-select input-model="produtos" output-model="novoProduto.adjacentes" button-label="nome"
                         item-label="nome" tick-property="ticked"></div>
                 </div>
@@ -111,7 +116,8 @@ if(isset($_POST['vertices'], $_POST['arestas'])){
             <div class="well">
                 <div class="row" style="margin-left: 10px;">
                    
-                    <ul class="list-group col-md-4" ng-repeat="prateleira in prateleiras">
+                    <ul class="list-group col-md-4" ng-repeat="(key, prateleira) in prateleiras">
+                        <li class="list-group-item nome-prateleira">Prateleira {{key+1}}</li>
                         <li class="list-group-item" ng-repeat="vertice in prateleira.vertices">{{vertice}}</li>
                     </ul>
 

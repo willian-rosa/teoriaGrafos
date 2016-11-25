@@ -17,18 +17,29 @@ class AlgoritmoColorir{
     /**
      * 
      * @param Vertice[] $vertices
-     * @return Vertice
+     * @return Vertice|null
      */
     private function maiorNumeroAdjacentes($vertices){
         
-        $verticeMaiorAdjacentes = reset($vertices);
+        $verticeMaiorAdjacentes = null;
         
         
         foreach ($vertices as $vertice) {
             
-            if(count($verticeMaiorAdjacentes->getAdjacentes()) < count($vertice->getAdjacentes())){
-                $verticeMaiorAdjacentes = $vertice;                
+            if(!$vertice->getCor()){
+                
+                if(\is_null($verticeMaiorAdjacentes)){
+                    
+                    $verticeMaiorAdjacentes = $vertice;
+                    
+                }elseif(count($verticeMaiorAdjacentes->getAdjacentes()) < count($vertice->getAdjacentes())){
+                    
+                    $verticeMaiorAdjacentes = $vertice;                
+                    
+                }
+                
             }
+            
         }
         
         return $verticeMaiorAdjacentes;
@@ -113,9 +124,10 @@ class AlgoritmoColorir{
         
         $this->limpaVerticesCor();
         
-        $vertice = $this->maiorNumeroAdjacentes($this->vertices);
+        while ($vertice = $this->maiorNumeroAdjacentes($this->vertices)){
+            $this->colorirVerticeEmProfundidade($vertice);
+        }
                 
-        $this->colorirVerticeEmProfundidade($vertice);
         
         return $this->cores;
         
@@ -126,23 +138,23 @@ class AlgoritmoColorir{
         $this->limpaVerticesCor();
         $vertices       = array();
         
-        $vertice = $this->maiorNumeroAdjacentes($this->vertices);
-        
-        
-        $this->colorirVerticeEmLargura($vertice);
-        $vertices[] = $vertice;
-        
-        while (count($vertices)) {
-            
-            $veticeColorido = array_shift($vertices);
-            
-            foreach ($veticeColorido->getAdjacentes() as $verticeAdjacente){
-                if(!$verticeAdjacente->getCor()){
-                    $this->colorirVerticeEmLargura($verticeAdjacente);
-                    $vertices[] = $verticeAdjacente;
+        while ($vertice = $this->maiorNumeroAdjacentes($this->vertices)){
+            $this->colorirVerticeEmLargura($vertice);
+            $vertices[] = $vertice;
+
+            while (count($vertices)) {
+
+                $veticeColorido = array_shift($vertices);
+
+                foreach ($veticeColorido->getAdjacentes() as $verticeAdjacente){
+                    if(!$verticeAdjacente->getCor()){
+                        $this->colorirVerticeEmLargura($verticeAdjacente);
+                        $vertices[] = $verticeAdjacente;
+                    }
                 }
             }
         }
+        
         
         return $this->cores;
         
